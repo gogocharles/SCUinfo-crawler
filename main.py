@@ -1,9 +1,5 @@
 from json import loads
-
-from getHTMLText import getDynamicText
-
 import time
-
 import functions
 
 url = "https://api.scuinfo.com/api/posts?pageSize=15"
@@ -17,7 +13,7 @@ text = ""
 flag = True
 
 while flag:
-    page = loads(getDynamicText(url + nextPage, 'api.scuinfo.com',
+    page = loads(functions.getDynamicText(url + nextPage, 'api.scuinfo.com',
                                 'https://scuinfo.com/', 'gzip'))
     data = page['data']
     cnt = 0
