@@ -1,7 +1,5 @@
-# SCUinfo-crawler
+# SCUinfo-crawler 四川大学匿名论坛爬虫
 
 ## Introduction
 
-一个爬取SCUinfo的网络爬虫程序。
-
-使用python语言实现。
+爬取SCUinfo从2018年1月1日起的所有帖子。
