@@ -42,7 +42,6 @@ def fetch(end):
     today = getdate(time()).split("-")
     monthly_posts = dict()
     this_year, this_month = today[0], today[1]
-    last_year = this_year
     try:
         mkdir(DATA_PATH + this_year)
     except FileExistsError:
