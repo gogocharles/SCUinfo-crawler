@@ -2,4 +2,4 @@
 
 ## Introduction
 
-爬取SCUinfo从2018年1月1日起的所有帖子。
+基于Python编写的网络爬虫，获取并归档SCUinfo从2018年1月1日起至今的所有帖子
