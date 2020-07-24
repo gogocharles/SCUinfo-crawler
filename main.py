@@ -27,49 +27,61 @@ def request(start_id=None):
                                       'https://scuinfo.com/', 'gzip')
         except HTTPError:
             # 如果因为请求太密集拒绝访问, 则等待一段时间
-            logging.warning("Request denied at ID: "+start_id)
+            logging.warning("Request denied at ID: " + start_id)
             sleep(180)
 
 
-def fetch(end, start_id=None):
+def fetch(end):
     """
     爬取截止到指定日期前的所有post
 
-    :param start_id: 起始post id, 默认为当前时间最新的post id
     :param end: 爬取post的截止日期, 形式为: "%Y-%m-%d"
     :return: 结果写入/data/%Y/路径下对应月份的JSON文件, 无返回值
     """
 
-    yesterday = getdate(time() - 86400).split("-")
+    today = getdate(time()).split("-")
     monthly_posts = dict()
-    last_year = ""
-    this_year, this_month = yesterday[0], yesterday[1]
+    this_year, this_month = today[0], today[1]
+    last_year = this_year
     try:
         mkdir(DATA_PATH + this_year)
     except FileExistsError:
         pass
     flag = True
-    current_id = start_id
+    current_id = ""
     last_date = ""
+    rnd = 0
 
     while flag:
         page = loads(request(current_id))
         data = page['data']
         cnt = 0
+        if rnd == 0 and cnt == 0:
+            # 第一条帖子为公告, 去除
+            data.pop(0)
         for item in data:
             cnt += 1
             post_date = getdate(item['date'])
             date = post_date.split("-")
             year, month, day = date[0], date[1], date[2]
-            if year != this_year:
-                try:
-                    mkdir(DATA_PATH + year)
-                except FileExistsError:
-                    pass
-                last_year = this_year
-                this_year = year
+            last_year = this_year
+            # 如果到达了制定日期的下一天, 或者已经爬取完了所有贴子, 则输出已有数据结束程序
+            if last_date == end and post_date != end or post_date == "2018-01-01" and len(data) == cnt:
+                with open(DATA_PATH + last_year + "/" + this_month + ".json", "w", encoding="utf-8") as out:
+                    dump(monthly_posts, out, ensure_ascii=False, indent=4)
+                flag = False
+                break
+            # 进入下一月份, 则输出上一个月份的数据
             if month != this_month:
+                # 跨年的情况
                 if month == "12":
+                    # 进入新一年, 则为新一年创建目录
+                    try:
+                        mkdir(DATA_PATH + year)
+                    except FileExistsError:
+                        pass
+                    last_year = this_year
+                    this_year = year
                     out = open(DATA_PATH + last_year + "/01.json", "w", encoding="utf-8")
                 else:
                     out = open(DATA_PATH + this_year + "/" + this_month + ".json", "w", encoding="utf-8")
@@ -77,11 +89,6 @@ def fetch(end, start_id=None):
                 out.close()
                 this_month = month
                 monthly_posts = dict()
-            if last_date == end and post_date != end or post_date == "2018-01-01" and len(data) == cnt:
-                with open(DATA_PATH + this_year + "/" + this_month + ".json", "w", encoding="utf-8") as out:
-                    dump(monthly_posts, out, ensure_ascii=False, indent=4)
-                flag = False
-                break
             if day in monthly_posts.keys():
                 monthly_posts[day].append((item["gender"], item["content"]))
             else:
@@ -89,7 +96,8 @@ def fetch(end, start_id=None):
             if len(data) == cnt:
                 current_id = str(item['id'])
             last_date = post_date
+        rnd += 1
 
 
 if __name__ == "__main__":
-    fetch("2018-01-01", "10000671")
+    fetch("2018-01-01")
