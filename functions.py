@@ -38,5 +38,5 @@ def fetch_json_package(url, host, referer, encoding):
 
 
 if __name__ == "__main__":
-    u = "https://api.scuinfo.com/api/posts?pageSize=15&fromId=258545"
+    u = "https://api.scuinfo.com/api/posts?pageSize=150"
     print(fetch_json_package(u, 'api.scuinfo.com', 'https://scuinfo.com/', 'gzip'))

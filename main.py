@@ -99,4 +99,4 @@ def fetch(end):
 
 
 if __name__ == "__main__":
-    fetch("2018-01-01")
+    fetch("2020-07-01")
