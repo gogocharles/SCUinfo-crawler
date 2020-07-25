@@ -21,7 +21,7 @@ def fetch_json_package(url, host, referer, encoding):
 
     :param url: AJAX API地址
     :param host: 目标服务器
-    :param referer: 请求者
+    :param referer: header的引用页
     :param encoding: 编码
     :return: 字典格式的JSON数据包
     """
