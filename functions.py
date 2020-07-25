@@ -19,7 +19,7 @@ def fetch_json_package(url, host, referer, encoding):
     """
     JSON抓包函数
 
-    :param url: 请求地址
+    :param url: AJAX API地址
     :param host: 目标服务器
     :param referer: 请求者
     :param encoding: 编码
