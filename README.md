@@ -7,7 +7,7 @@ SCUinfo-crawler  四川大学匿名论坛爬虫
 
 基于Python编写的网络爬虫，获取并归档SCUinfo从2018年1月1日后任意日期至今的所有帖子
 
-SCUinfo为动态加载的页面，需要向其AJAX接口发起请求抓取json数据包。关于这一部分如何实现，可以参考我的[这篇博文](https://blog.gogocharles.xyz/2020/03/16/scuinfo-crawler/)。
+SCUinfo为动态加载的页面，需要向其AJAX接口发起请求抓取json数据包。
 
 注意，SCUinfo的AJAX接口是有可能更换的，所以如果无法正确访问，请用刚刚那篇文章的方法调用开发者工具获取API的URL以及header中的重要信息。
 
